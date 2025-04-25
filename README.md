@@ -59,25 +59,25 @@ Relationships:
    
 Customers
 - has many Orders
-- Orders
+Orders
 - belongs to one Customer
 - has many OrderItems
 - has one Payment
 - has one Shipping
-- Products
+Products
 - belongs to one Category
 - belongs to one Seller
 - has many OrderItems
-- OrderItems
+OrderItems
 - belongs to one Order
 - belongs to one Product
-- Payments
+Payments
 - belongs to one Order
-- Shipping
+Shipping
 - belongs to one Order
-- Categories
+Categories
 - has many Products
-- Sellers
+Sellers
 - has many Products
   
 Validation:
@@ -209,8 +209,7 @@ CREATE TABLE attribute_type (
 );
 
 TEAM COLLABORATORS ON THIS PROJECT/GROUP ASSIGNMENT
-1. IKENNA - 
-2. SAM JUWON - 
-3. DANIEL OHACHOR -
-4. KEMOI BRIAN -
-5. ILEOGBEN EMMANUELLA AIMALOHI - emmanuellaileogben@gmail.com
+1. OPARA IKENNA - hikayharrison@gmail.com 
+2. ADEOSUN JUWON - juwonsamuel398@gmail.com
+3. OHACHOR DANIEL - ohachordaniel2021@gmail.com
+4. ILEOGBEN EMMANUELLA AIMALOHI - emmanuellaileogben@gmail.com
