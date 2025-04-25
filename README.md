@@ -59,25 +59,25 @@ Relationships:
    
 Customers
 - has many Orders
-Orders
+- Orders
 - belongs to one Customer
 - has many OrderItems
 - has one Payment
 - has one Shipping
-Products
+- Products
 - belongs to one Category
 - belongs to one Seller
 - has many OrderItems
-OrderItems
+- OrderItems
 - belongs to one Order
 - belongs to one Product
-Payments
+- Payments
 - belongs to one Order
-Shipping
+- Shipping
 - belongs to one Order
-Categories
+- Categories
 - has many Products
-Sellers
+- Sellers
 - has many Products
   
 Validation:
@@ -207,6 +207,179 @@ CREATE TABLE attribute_type (
     type_id INT AUTO_INCREMENT PRIMARY KEY,
     type_name VARCHAR(255) NOT NULL UNIQUE
 );
+## Tests Table Creation
+
+
+
+-- Check if the Product_category table exists
+SHOW TABLES LIKE 'Product_category';
+
+-- Check if the Product table exists
+SHOW TABLES LIKE 'Product';
+
+-- Check if the Brand table exists
+SHOW TABLES LIKE 'Brand';
+
+-- Check if the Product_attribute table exists
+SHOW TABLES LIKE 'Product_attribute';
+
+-- Check if the Product_variation table exists
+SHOW TABLES LIKE 'Product_variation';
+
+### Expexted Output:
+
++-------------------+
+| Tables_in_db_name |
++-------------------+
+| Product_category  |
+| Product           |
+| Brand             |
+| Product_attribute |
+| Product_variation |
++-------------------+
+## Test Data Insertions
+
+
+### Product_category Table
+-- Insert test data into Product_category
+INSERT INTO Product_category (category_name) VALUES ('Electronics'), ('Clothing'), ('Books');
+
+-- Query the Product_category table
+SELECT * FROM Product_category;
+
+-- Expected Output:
+-- +-------------+----------------+
+-- | category_id | category_name  |
+-- +-------------+----------------+
+-- |           1 | Electronics    |
+-- |           2 | Clothing       |
+-- |           3 | Books          |
+-- +-------------+----------------+
+
+
+### Brand Table
+-- Insert test data into Brand
+INSERT INTO Brand (product_name) VALUES ('Samsung'), ('Nike'), ('Penguin');
+
+-- Query the Brand table
+SELECT * FROM Brand;
+
+-- Expected Output:
+-- +----------+---------------+
+-- | brand_id | product_name  |
+-- +----------+---------------+
+-- |        1 | Samsung       |
+-- |        2 | Nike          |
+-- |        3 | Penguin       |
+-- +----------+---------------+
+
+
+### Products Table
+
+-- Insert test data into Product
+INSERT INTO Product (name, description, base_price, category_id, brand_id)
+VALUES ('Samsung Galaxy S23', 'Latest Android smartphone', 999.99, 1, 1),
+       ('Nike Air Max 270', 'Men''s running shoes', 150.00, 2, 2),
+       ('The Great Gatsby', 'Classic American novel', 15.99, 3, 3);
+
+-- Query the Product table
+SELECT * FROM Product;
+
+-- Expected Output:
+-- +------------+--------------------+--------------------------+------------+-------------+----------+---------------+
+-- | product_id | name               | description              | base_price | category_id | brand_id | validation_id |
+-- +------------+--------------------+--------------------------+------------+-------------+----------+---------------+
+-- |          1 | Samsung Galaxy S23 | Latest Android smartphone|     999.99 |           1 |        1 | NULL          |
+-- |          2 | Nike Air Max 270   | Men's running shoes      |     150.00 |           2 |        2 | NULL          |
+-- |          3 | The Great Gatsby   | Classic American novel   |      15.99 |           3 |        3 | NULL          |
+-- +------------+--------------------+--------------------------+------------+-------------+----------+---------------+
+
+
+### Product_attribute
+
+-- Insert test data into Product_attribute
+INSERT INTO Product_attribute (product_id, attribute_name, attribute_value)
+VALUES (1, 'Brand', 'Samsung'),
+       (1, 'Model', 'Galaxy S23'),
+       (2, 'Brand', 'Nike'),
+       (2, 'Style', 'Air Max 270'),
+       (3, 'Author', 'F. Scott Fitzgerald');
+
+-- Query the Product_attribute table
+SELECT * FROM Product_attribute;
+
+-- Expected Output:
+-- +--------------+------------+----------------+-------------------+
+-- | attribute_id | product_id | attribute_name | attribute_value   |
+-- +--------------+------------+----------------+-------------------+
+-- |            1 |          1 | Brand          | Samsung           |
+-- |            2 |          1 | Model          | Galaxy S23        |
+-- |            3 |          2 | Brand          | Nike              |
+-- |            4 |          2 | Style          | Air Max 270       |
+-- |            5 |          3 | Author         | F. Scott Fitzgerald |
+-- +--------------+------------+----------------+-------------------+
+
+
+### Product_item Table
+
+-- Insert test data into Product_item
+INSERT INTO Product_item (product_id, color_id, size_id, image_id)
+VALUES (1, 1, 1, 1),
+       (2, 2, 2, 2),
+       (3, 3, 3, 3);
+
+-- Query the Product_item table
+SELECT * FROM Product_item;
+
+-- Expected Output:
+-- +---------------+------------+----------+---------+----------+
+-- | validation_id | product_id | color_id | size_id | image_id |
+-- +---------------+------------+----------+---------+----------+
+-- |             1 |          1 |        1 |       1 |        1 |
+-- |             2 |          2 |        2 |       2 |        2 |
+-- |             3 |          3 |        3 |       3 |        3 |
+-- +---------------+------------+----------+---------+----------+
+
+
+### Product_variation Table
+
+-- Insert test data into Product_variation
+INSERT INTO Product_variation (product_id, color_id, size_id, image_id, sku, quantity, price)
+VALUES (1, 1, 1, 1, 'SGS23-C1-S1', 100, 999.99),
+       (2, 2, 2, 2, 'NAM270-C2-S2', 50, 150.00),
+       (3, 3, 3, 3, 'TGG-C3-S3', 200, 15.99);
+
+-- Query the Product_variation table
+SELECT * FROM Product_variation;
+
+-- Expected Output:
+-- +--------------+------------+----------+---------+----------+-------------+----------+-------+
+-- | variation_id | product_id | color_id | size_id | image_id | sku         | quantity | price |
+-- +--------------+------------+----------+---------+----------+-------------+----------+-------+
+-- |            1 |          1 |        1 |       1 |        1 | SGS23-C1-S1 |      100 | 999.99|
+-- |            2 |          2 |        2 |       2 |        2 | NAM270-C2-S2|       50 | 150.00|
+-- |            3 |          3 |        3 |       3 |        3 | TGG-C3-S3   |      200 |  15.99|
+-- +--------------+------------+----------+---------+----------+-------------+----------+-------+
+
+
+### Color Table
+
+-- Insert test data into Color
+INSERT INTO Color (color_name)
+VALUES ('Red'), ('Blue'), ('Green');
+
+-- Query the Color table
+SELECT * FROM Color;
+
+-- Expected Output:
+-- +----------+------------+
+-- | color_id | color_name |
+-- +----------+------------+
+-- |        1 | Red        |
+-- |        2 | Blue       |
+-- |        3 | Green      |
+-- +----------+------------+
+
 
 TEAM COLLABORATORS ON THIS PROJECT/GROUP ASSIGNMENT
 1. OPARA IKENNA - hikayharrison@gmail.com 

@@ -66,7 +66,7 @@ INSERT INTO Brand (product_name) VALUES
     ('KitchenAid'), -- Home & Kitchen
     ('Penguin'),   -- Books
     ('Adidas'),    -- Sports & Outdoors
-    ('Cetaphil')  -- Beauty & Personal Care
+    ('Cetaphil'),  -- Beauty & Personal Care
     ('Hasbro'),     -- Toys & Games
     ('Toyota'),    -- Automotive
     ('Johnson & Johnson'), -- Health & Household
@@ -80,7 +80,7 @@ INSERT INTO Brand (product_name) VALUES
 CREATE TABLE Product (
     product_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    description TEXT
+    description TEXT,
     base_price DECIMAL(10, 2) NOT NULL,
     category_id INT NOT NULL,
     brand_id INT,
@@ -136,7 +136,7 @@ INSERT INTO Product_item (product_id, color_id, size_id, image_id) VALUES
 /* Color Table */
 CREATE TABLE Color (
     color_id INT AUTO_INCREMENT PRIMARY KEY,
-    color_name VARCHAR(50),
+    color_name VARCHAR(255),
     FOREIGN KEY (brand_id) REFERENCES Brand(brand_id),
     FOREIGN KEY (variation_id) REFERENCES Product_variation(variation_id)
 );
@@ -157,7 +157,7 @@ INSERT INTO Color (color_name) VALUES
     ('Teal');
 
 /* Product Variation Table */
-CREATE TABLE product_variation (
+CREATE TABLE Product_variation (
     variation_id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT NOT NULL,
     color_id INT NOT NULL,
@@ -174,7 +174,7 @@ CREATE TABLE product_variation (
 );
 
 -- Insert statements for 12 Product Variation Items in the E-commerce Store
-INSERT INTO product_variation (product_id, color_id, size_id, image_id, sku, quantity, price) VALUES
+INSERT INTO Product_variation (product_id, color_id, size_id, image_id, sku, quantity, price) VALUES
     (1, 1, 1, 1, 'SGS23-C1-S1', 100, 999.99),  -- Samsung Galaxy S23, Color 1, Size 1
     (1, 2, 1, 2, 'SGS23-C2-S1', 50, 999.99),   -- Samsung Galaxy S23, Color 2, Size 1
     (2, 3, 2, 3, 'NAM270-C3-S2', 75, 150.00),  -- Nike Air Max 270, Color 3, Size 2
@@ -189,13 +189,13 @@ INSERT INTO product_variation (product_id, color_id, size_id, image_id, sku, qua
     (9, 10, 1, 12, 'JJB-C10-CT1', 300, 4.99);   -- Johnson & Johnson Band-Aids, Color 10, Count 1
 
 -- Inserting the additional items as requested
-INSERT INTO product_variation (product_id, color_id, size_id, image_id, sku, quantity, price) VALUES
+INSERT INTO Product_variation (product_id, color_id, size_id, image_id, sku, quantity, price) VALUES
     (10, 11, 3, 13, 'PPP-C11-SZ3', 40, 55.00),  -- Purina Pro Plan Dog Food, Color 11, Size 3
     (11, 12, 1, 14, 'OMP-C12-SZ1', 150, 8.25),  -- OfficeMax Multipurpose Paper, Color 12, Size 1
     (12, 13, 2, 15, 'NTH-C13-SZ2', 100, 6.50);  -- Nestlé Toll House Chocolate Chips, Color 13, Size 2
 
 /* Create the Produc Attribute Table */
-CREATE TABLE product_attribute (
+CREATE TABLE Product_attribute (
     attribute_id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT NOT NULL,
     attribute_name VARCHAR(255) NOT NULL,
@@ -204,7 +204,7 @@ CREATE TABLE product_attribute (
 );
 
 -- Insert statements for sample data into the product_attribute table
-INSERT INTO product_attribute (product_id, attribute_name, attribute_value) VALUES
+INSERT INTO Product_attribute (product_id, attribute_name, attribute_value) VALUES
     (1, 'Brand', 'Samsung'),
     (1, 'Model', 'Galaxy S23'),
     (1, 'Storage', '256GB'),
@@ -245,7 +245,7 @@ INSERT INTO product_attribute (product_id, attribute_name, attribute_value) VALU
 
 /* Attribute Category Table */
 -- Create the attribute_category table
-CREATE TABLE attribute_category (
+CREATE TABLE Attribute_category (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
     category_name VARCHAR(255) NOT NULL UNIQUE
     FOREIGN KEY (product_attribute_id) REFERENCES Product_attribute(product_attribute_id)
@@ -253,7 +253,7 @@ CREATE TABLE attribute_category (
 
 -- Insert data into the attribute_category table
 -- Data is derived from the attribute_name column in the product_attribute table
-INSERT INTO attribute_category (category_name) VALUES
+INSERT INTO Attribute_category (category_name) VALUES
     ('Brand'),
     ('Model'),
     ('Storage'),
@@ -280,14 +280,14 @@ INSERT INTO attribute_category (category_name) VALUES
 
 /* Size Category Table */ 
 -- Create the size_category table
-CREATE TABLE size_category (
+CREATE TABLE Size_category (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
     category_name VARCHAR(255) NOT NULL UNIQUE
 );
 
 -- Insert data into the size_category table
 -- Data is derived from the size_id column and product information
-INSERT INTO size_category (category_name) VALUES
+INSERT INTO Size_category (category_name) VALUES
     ('Phone Storage'),       -- For products like Samsung Galaxy S23 (e.g., 256GB, 512GB)
     ('Shoe Size'),           -- For products like Nike Air Max 270, Adidas Ultraboost 22
     ('Capacity'),            -- For products like KitchenAid Stand Mixer (e.g., Quart)
@@ -301,16 +301,16 @@ INSERT INTO size_category (category_name) VALUES
 
 /* Size Option Table */
 -- Create the size_option table
-CREATE TABLE size_option (
+CREATE TABLE Size_option (
     option_id INT AUTO_INCREMENT PRIMARY KEY,
     category_id INT NOT NULL,
     option_name VARCHAR(255) NOT NULL,
-    FOREIGN KEY (category_id) REFERENCES size_category(category_id)
+    FOREIGN KEY (category_id) REFERENCES Size_category(category_id)
 );
 
 -- Insert data into the size_option table
 -- Data is derived from the product information
-INSERT INTO size_option (category_id, option_name) VALUES
+INSERT INTO Size_option (category_id, option_name) VALUES
     (1, '256GB'),       -- Phone Storage
     (1, '512GB'),
     (2, '7'),           -- Shoe Size
@@ -333,14 +333,14 @@ INSERT INTO size_option (category_id, option_name) VALUES
 
 /* Attribute Type Table */
 -- Create the attribute_type table
-CREATE TABLE attribute_type (
+CREATE TABLE Attribute_type (
     type_id INT AUTO_INCREMENT PRIMARY KEY,
     type_name VARCHAR(255) NOT NULL UNIQUE
 );
 
 -- Insert data into the attribute_type table
 -- Data is derived from the attribute_name column in the product_attribute table
-INSERT INTO attribute_type (type_name) VALUES
+INSERT INTO Attribute_type (type_name) VALUES
     ('Brand'),
     ('Model'),
     ('Storage'),
